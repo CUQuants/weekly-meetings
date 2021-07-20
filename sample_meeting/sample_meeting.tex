@@ -1,0 +1,33 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb, hyperref}
+
+\title{Sample Meeting}
+\author{Diego Alvarez \\ \href{mailto:diego.alvarez@colorado.edu}{diego.alvarez@colorado.edu}}
+\date{July 2021}
+
+\begin{document}
+
+\maketitle
+
+\section*{Non-differentialability of Brownian motion}
+The fundamental theorem of calculus \emph{breaths life} into calculus. By definition it is
+$$
+\int_{a}^b f(x) dx = F(b) - F(a)
+$$
+where $F'(x) = f(x)$
+\newline
+\newline
+This equation allows for the operators used in calculus to be applied such as the derivative and the integral.
+\newline
+\newline
+We'll go over how this theorem doesn't hold for Brownian motions. We can write the definition of the integral as
+$$
+\int_a^b f(x)dx = \lim_{n \to \infty} \sum_{i=1}^\infty f(x_i^*) \Delta x
+$$
+Really what we are \emph{hoping} for is that it converges to some value
+$$
+\lim_{n \to \infty} \sum_{i=1}^\infty f(x_i^*) \Delta x \in \mathbb{R}
+$$
+The problem is that for a Brownian motion it doesn't converge to a value. That is because when you zoom into a smooth function it gets flat. That's how you can approximate it with rectangles. But you can infinitely zoom into a Brownian motion and it will look bumpy.
+\end{document}
