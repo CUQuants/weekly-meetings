@@ -1,0 +1,266 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, hyperref}
+\usepackage[utf8]{inputenc}
+
+\title{Simplified approach for $dW_tdt=0$, $dW_t^2=dt$, and $dt^2=0$}
+\author{Diego Alvarez \\ \href{mailto:diego.alvarez@colorado.edu}{diego.alvarez@colorado.edu}}
+\date{July 2021}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+When going over Ito's lemma it may be common to see the proof for the differentials, and not really fully understand where they come from. When I first learned Ito's lemma I remember glossing over the proof and really just remembering the common differentials.
+\newline
+\newline
+This paper is more of how these computations are done, therefore this document is similar to the math in an appendix of a paper. 
+
+\section*{Overview of Steps}
+Something to consider is that each of these statements are really integrals and not differentials 
+$$
+dW_tdt = \int_0^t dW_s ds, \; \; \; dW_t^2 = \int_0^t dW_s^2, \; \; \; dt^2 = \int_0^t ds^2   
+$$
+The steps for proving these statements
+\begin{enumerate}
+  \item Write out definition of the integral.
+  \item \emph{pack} variables.
+  \item Then set up the integral to be proved by mean squared convergence
+  \item Work out mean squared convergence and then \emph{unpack} variables
+  \item Use the fact that expectation is a linear operator and work out each expectation
+\end{enumerate}
+
+\section*{Things we'll need later on}
+Because this paper consists of math that would normally be in the appendix, we will cover some of the proofs and tools that we will need in the future rather than referencing them during the proof causing the reader to go to the appendix. 
+\newline
+\newline
+These are some simple algebra proofs that we will use later on 
+\begin{equation} \label{eq1}
+\begin{split}
+(a+b)^2 & = a^2 + b^2 + 2ab\\
+\end{split}
+\end{equation}
+\begin{equation} \label{eq1}
+\begin{split}
+(a-b)^2 & = a^2 + b^2 -2ab
+\end{split}
+\end{equation}
+For two independent Brownians
+\begin{equation} \label{eq1}
+\begin{split}
+\mathbb{E}[\Delta W_{t_k} \Delta W_{t_j}] & = \mathbb{E}[\Delta W_{t_k}] \mathbb{E}[\Delta W_{t_j}]\\
+ & = \mathbb{E}[\Delta W_{t_j}]\mathbb{E}[\Delta W_{t_k}] \\
+ & = 0
+\end{split}
+\end{equation}
+If this statement true then the random variable $X_n$ converges in the mean squared sense. This is mean-squared convergence
+\begin{equation} \label{eq1}
+\begin{split}
+\mathbb{E}[|X_n - X|^2] = 0 
+\end{split}
+\end{equation}
+Let's write out the first moments of a Brownian motion $B_t$
+$$
+E[B_t] = 0
+$$
+$$
+E[B_t^2] = t
+$$
+\section*{Working out $\boldsymbol{dW_t dt = 0}$}
+Let's start by representing this as an integral
+$$
+dW_t dt = \int_0^t dW_s dt 
+$$
+Then by definition of integral 
+\begin{equation}
+\begin{split}
+    \int_0^t dW_s dt &= \lim_{n \to \infty} \sum_{k=1}^n \left( W_{t_k} - W_{t_{k-1}} \right) \left(t_k - t_{k-1} \right) \\ 
+    & = \lim_{n \to \infty} \sum_{k=1}^n \Delta W_{t_k} \Delta t_k
+\end{split}
+\end{equation}
+Now we will start \emph{packing} our variables by using these substitutions
+\begin{equation}
+    \Delta W_{t_k} \Delta t_k = X_k 
+\end{equation}
+\begin{equation}
+    X_n = \sum_{i=1}^n X_k
+\end{equation}
+Applying the substitutions in eq.6 and eq.7 into eq.5 
+\begin{equation}
+    \lim_{n \to \infty} X_n = X
+\end{equation}
+Now we can plug in $X_n$ into the mean-squared convergence from eq.4
+$$
+\lim_{n \to \infty} \mathbb{E}[|X_n - X|^2] = 0
+$$
+We are checking that it goes to zero ($dW_tdt = 0)$ so we set $X = 0$ giving us
+$$
+\lim_{n \to \infty} \mathbb{E}[|X_n - 0|^2] = 0
+$$
+Now let's start \emph{unpack} our variables
+\begin{equation}
+\lim_{n \to \infty} \mathbb{E} \left[ |X_n - X |^2 \right] = \lim_{n \to \infty} \mathbb{E} \left[ \left( \sum_{i=1}^n X_k \right)^2 \right]
+\end{equation}
+Then by the proof in eq.1 we can rewrite the summation. The thing to consider is that $a$ and $b$ are values in an index. We have to take that into account when we work out the summation
+$$
+\left( \sum_{k=1}^n X_k \right)^2 = \sum_{i=1}^n X_k^2 + 2 \sum_{k=1}^n \sum_{j=1}^{k-1}X_k X_j
+$$
+Then plugging that into eq.9 we get 
+$$
+\lim_{n \to \infty} \mathbb{E} \left[ \left( \sum_{i=1}^n X_k \right)^2 \right] = \lim_{n \to \infty} \mathbb{E} \left[ \sum_{i=1}^n X_k^2 + 2 \sum_{k=1}^n \sum_{j=1}^{k-1}X_k X_j \right]
+$$
+Then \emph{unpack} using our substitutions in eq.6 and eq.7
+$$
+\lim_{n \to \infty} \mathbb{E} \left[ \left( \sum_{i=1}^n X_k \right)^2 \right] = \lim_{n \to \infty} \mathbb{E} \left[ \sum_{i=1}^n (\Delta W_k \Delta t_k)^2 + 2 \sum_{k=1}^n \sum_{j=1}^{k-1} \Delta W_{t_k} \Delta t_k \Delta W_{t_j} \Delta t_j \right]
+$$
+Now use the fact that expected value is a linear operator
+$$
+\lim_{n \to \infty} \mathbb{E} \left[ \left( \sum_{i=1}^n X_k \right)^2 \right] = \lim_{n \to \infty} \sum_{i=1}^n \mathbb{E} \left[(\Delta W_{t_k})^2 \right] + 2 \sum_{k=1}^n \sum_{j=1}^{k-1} \mathbb{E} \left[ \Delta W_{t_k} \Delta W_{t_j} \right] \Delta t_k \Delta t_j
+$$
+From eq. 3 we know that 2nd expected value $\mathbb{E} \left[ \Delta W_{t_k} \Delta W_{t_j} \right]$ goes to 0. That leaves
+$$
+\lim_{n \to \infty} \mathbb{E} \left[ \left( \sum_{i=1}^n X_k \right)^2 \right] = \lim_{n \to \infty} \sum_{i=1}^n \mathbb{E} \left[(\Delta W_{t_k})^2 \right] 
+$$
+Now we are left with $\mathbb{E} \left[ (\Delta W_{t_k})^2 \right]$ which is variance, and the second moment. The variance of a Brownian motion the length of the interval, but by the second moment from the moment generating function in eq. [add equation] is 
+$$
+\lim_{n \to \infty} \sum_{k=1}^n \Delta t_k \Delta t_k^2 = \lim_{n \to \infty} \sum_{k=1}^n \Delta t_k^3 = \lim_{n \to \infty} \sum_{k=1}^n (t_k - t_{k-1})^3
+$$
+That all goes to zero, from a visual perspective we cutting an interval to an infinitesimal size.
+$$
+\lim_{n \to \infty} \sum_{k=1}^n \Delta t_k^3 = 0
+$$
+Now that the limit goes to zero we have proved that $dW_t dt = 0$ goes to by the mean squared convergence theorem
+
+\section*{Working out $\boldsymbol{dW_t^2 = dt}$}
+Let's start by representing this as an integral
+$$
+dW_t^2 = \int_0^t dW_s^2
+$$
+Then by definition of integral 
+\begin{equation}
+\begin{split}
+    \int_0^t dW_s^2 &= \lim_{n \to \infty} \sum_{k=1}^n \left( W_{t_k} - W_{t_{k-1}} \right)^2 \\ 
+    & = \lim_{n \to \infty} \sum_{k=1}^n \Delta W_{t_k}^2
+\end{split}
+\end{equation}
+In this case we are not going to \emph{pack} and \emph{unpack} variables, but we are going to summation into the mean squared convergence
+$$
+\sum_{k=1}^n \Delta W_{t_k}^2 = \mathbb{E} \left[ \biggr\rvert \sum_{k=1}^n \Delta W_{t_k}^2 - X \biggr\rvert^2 \right] = 0
+$$
+Because we are trying to prove that $dW_t^2 = dt$ we set $X = t$ and plugging that into the limit as well we get
+\begin{equation}
+\mathbb{E} \left[ \biggr\rvert \sum_{k=1}^n \Delta W_{t_k}^2 - X \biggr\rvert^2 \right] = \lim_{n \to \infty} \mathbb{E} \left[  \left(\sum_{k=1}^n \Delta W_{t_k}^2 - t\right)^2 \right] = 0
+\end{equation}
+Then by the proof in eq.2 we can rewrite the summation as 
+$$
+\left(\sum_{k=1}^n \Delta W_{t_k}^2 - t\right)^2 = \left( \sum_{k=1}^n \Delta W_{t_k}^2 \right)^2 + t^2 - 2t \sum_{k=1}^n \Delta W_{t_k}^2
+$$
+And plugging that into eq.11
+\begin{equation}
+\lim_{n \to \infty} \mathbb{E} \left[  \left(\sum_{k=1}^n \Delta W_{t_k}^2 - t\right)^2 \right] = \lim_{n \to \infty} \mathbb{E} \left[ \left( \sum_{k=1}^n \Delta W_{t_k}^2 \right)^2 + t^2 - 2t \sum_{k=1}^n \Delta W_{t_k}^2 \right]
+\end{equation}
+Then for the first summation on the right hand side we can use the proof from eq.12
+$$
+\left( \sum_{k=1}^n \Delta W_{t_k}^2 \right)^2 = \sum_{k=1}^n  X_k^2 + 2 \sum_{k=1}^n \sum_{j=1}^{n-1} X_k X_j
+$$
+Plugging all of that into the equation 
+$$
+\lim_{n \to \infty} \mathbb{E} \left[  \left(\sum_{k=1}^n \Delta W_{t_k}^2 - t\right)^2 \right] = \lim_{n \to \infty} \mathbb{E} \left[ \sum_{k=1}^n \Delta W_{t_k}^4 + 2 \sum_{k=1}^n \sum_{j=1}^{k-1} \Delta W_{t_k}^2 \Delta W_{t_j}^2 + t^2 - 2t \sum_{k=1}^n ] \Delta W_{t_k}^2 \right]
+$$
+Then use the fact that expectation is a linear operator
+$$
+\lim_{n \to \infty} \left( \sum_{k=1}^n \Delta \mathbb{E} \left[W_{t_k}^4 \right]+ 2 \sum_{k=1}^n \sum_{j=1}^{k-1} \mathbb{E} \left[ \Delta W_{t_k}^2 \Delta W_{t_j}^2 \right] + t^2 - 2t \sum_{k=1}^n \mathbb{E} \left[\Delta W_{t_k}^2 \right] \right)
+$$
+Using the moment generating function that we found we can work out the moments
+$$
+\mathbb{E} \left[ \Delta W_t^4 \right] = 3 \Delta t^2
+$$
+$$
+\mathbb{E} \left[ \Delta W_t^2 \right] = \Delta t
+$$
+And for independent Brownians we can separate the expectations
+$$
+\mathbb{E} \left[ \Delta W_{t_k}^2 \Delta W_{t_j}^2 \right] = \mathbb{E} [ \Delta W_{t_k}^2] \;  \mathbb{E} [ \Delta W_{t_j}^2 ]
+$$
+Plugging in expected values that we got
+$$
+\lim_{n \to \infty} \left( 3 \sum_{k=1}^n \Delta t_k^2 + 2 \sum_{k=1}^n \Delta t_k \Delta t_j + t^2 - 2t \sum_{k=1}^n \Delta t_k \right)
+$$
+Then if we look at this summation
+$$
+\sum_{k=1}^n \Delta t_k = t
+$$
+Replacing that summation with $t$ gives us
+$$
+\lim_{n \to \infty} \left( 3 \sum_{k=1}^n \Delta t_k^2 + 2 \sum_{k=1}^n \sum_{j=1}^{k-1} \Delta t_k \Delta t_j - t^2 \right)
+$$
+By definition we can rewrite 
+$$
+\Delta t = \frac{t}{n}
+$$
+Plugging that in we get
+$$
+\lim_{n \to \infty} \left( 3 \sum_{k=1}^n \left( \frac{t}{n} \right)^2 + 2 \sum_{k=1}^n \sum_{j=1}^{k-1} \frac{t}{n} \cdot \frac{t}{n} - t^2 \right)
+$$
+Then we can rewrite the summations are 
+$$
+\sum_{k=1}^n = n, \; \; \; \; \sum_{j=1}^{k-1} = \frac{n-1}{2}
+$$
+So plugging that in gives us
+$$
+\lim_{n \to \infty} \left( 3n \left( \frac{t}{n} \right)^2 + 2 \cdot \frac{n (n-1)}{2} \cdot \left( \frac{t}{n} \right)^2 - t^2 \right)
+$$
+Then simplify
+$$
+\lim_{n \to \infty} \left( \frac{3t^2}{n} + \left( 1 - \frac{1}{n} \right)t^2 - t^2 \right)
+$$
+Now when we consider the limit the fractions go to 0 which leave
+$$
+0 + (1 + 0)t^2 -t^2 = t^2 - t^2 = 0
+$$
+We have now proved that $dW_t^2 = dt$
+
+\section*{Working out $\boldsymbol{dt^2 = 0}$}
+Let's represent the differential as an integral
+$$
+dt^2 = \int_0^{t} ds^2
+$$
+Then by definition of the integral
+$$
+\int_0^t ds^2 = \lim_{n \to \infty} \sum_{k=1}^n \Delta t_k^2
+$$
+Then we are trying to prove this statement by using mean squared convergence
+$$
+\sum_{k=1}^n \Delta t_k^2 = \mathbb{E} \left[ \biggr\rvert X_n - X \biggr\rvert^2 \right] = 0
+$$
+Then plug in our desired value $X = 0$ 
+$$
+\lim_{n \to \infty} \mathbb{E} \left[ \biggr\rvert \sum_{k=1}^n \Delta t_k^2 - 0 \biggr\rvert^2 \right] = 0
+$$
+$$
+\lim_{n \to \infty} \mathbb{E} \left[ \left(\sum_{k=1}^n \Delta t_k^2 \right)^2 \right] = 0
+$$
+In this case everything is deterministic so we can drop the expected value
+$$
+\lim_{n \to \infty} \left( \sum_{k=1}^n \Delta t_k^2 \right)^2
+$$
+Then use the same definition that we had used in the previous example 
+$$
+\Delta t = \frac{t}{n}
+$$
+$$
+\sum_{k=1}^n = n
+$$
+Then plugging all that in we get 
+\begin{equation}
+\begin{split}
+    \lim_{n \to \infty} \left(\sum_{k=1}^n \Delta t_k^2 \right)^2 &= \lim_{n \to \infty} \left( n \left( \frac{t}{n} \right)^2 \right)^2 \\ 
+    & = \lim_{n \to \infty} \left( \frac{t^2}{n} \right)^2 \\
+\end{split}
+\end{equation}
+Then as we evaluate the limit the fraction goes to 0. 
+$$
+\lim_{n \to \infty} \left( \frac{t^2}{n} \right)^2 = 0
+$$
+We have now shown that it goes to zero therefore the statement is true by mean squared convergence.
+\end{document}
