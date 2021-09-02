@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+
+\title{An Introduction to Brownian Motions}
+\author{Diego Alvarez}
+\date{August 2021}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction \& motivation}
+
+Brownian motions are a stochastic process. There were first used to model floating particles in a liquid. The theory was developed by a few individuals Robert Brown, Nobert Weiner, and Albert Einstein. 
+\newline
+\newline
+A standard Brownian motion has these attributes. 
+$$
+\mu = 0
+$$
+$$
+\sigma^2 = t
+$$
+Essentially the spread of the distribution gets wider out through time. This makes sense from a financial modeling sense as we can probably estimate the range of where a stock can be over a short amount of time but the further out we go the wider the margins are.
+
+\section*{Albert Einstein's Approach to the Brownian motion}
+It wouldn't be until around 1956 when Albert Einstein would develop a theory for Brownian motions. What Einstein did was think of how the particles would move on a 1-dimensional level. He hypothesized that the distribution of paths taken was normally distributed. From there he had developed a theory that would describe how the particle would move. 
+\newline
+\newline
+Let's first start with the function $f(x,t)$ and to model the changes 1-dimensional dynamics. If we increase time by a small $\tau$ we get
+\begin{align}
+    f(x,t+\tau) = \int_{-\infty}^\infty f(x + \Delta, t) \phi(\Delta) d\Delta
+\end{align}
+Where $\Delta$ is the change in displacement that the particle makes. The function $\phi(\Delta)$ is the probability distribution of that particle's path. Essentially we are translating the future position of a particle is really the distance it will travel in time multiplied by the probability of that path being taken. 
+\newline
+\newline
+The cornerstone to Einstein's theory was representing both functions using taylor series. 
+\newline
+\newline
+We want to find the the taylor series for $f(x + \Delta, t)$
+$$
+f(x + \Delta, t) = f(x,t) + \Delta \cdot \frac{\partial f(x,t)}{\partial x} + \frac{\Delta^2}{2!} \cdot \frac{\partial^2 f(x,t)}{\partial x^2} + ... + \frac{\Delta^n}{n!} \cdot \frac{\partial^n f(x,t)}{\partial x^n}
+$$
+Then apply that to the definition of $f(x,t + \tau)$ that we had found in eq.1
+\begin{align*}
+    f(x, t + \tau) = &f(x,t) \int_{-\infty}^\infty \phi(\Delta) d\Delta + \frac{\partial f(x,t)}{\partial x} \int_{-\infty}^{\infty} \Delta \phi(\Delta) d\Delta +\\
+    & \frac{\partial^2 f(x,t)}{\partial x^2} \int_{-\infty}^{\infty} \frac{\Delta^2}{2!} \phi(\Delta) d\Delta + ...  + \frac{\partial^n f(x,t)}{\partial x^n} \int_{-\infty}^{\infty} \frac{\Delta^n}{n!} \phi(\Delta) d\Delta
+\end{align*}
+Let's look at the first term, we can see that the integral goes to 1. 
+$$
+f(x,t) \int_{-\infty}^\infty \phi(\Delta) d\Delta = f(x,t) \cdot 1
+$$
+Then if we look at the the second term it goes to zero.
+$$
+\frac{\partial f(x,t)}{\partial x} \int_{-\infty}^{\infty} \Delta \phi(\Delta) d\Delta = 0
+$$
+The best way to think of this is that when we integrate the $\Delta$ we will get an even exponent and when we plug in the bound we'll end up subtracting the same value. This is the case for all even terms in the our taylor series. 
+\newline
+\newline
+Now we want to find show that this all goes to the diffusion equation. We'll also need the taylor series of $f(x,t + \tau)$
+$$
+f(x, t+\tau) = f(x,t) + \tau \cdot \frac{\partial f(x,t)}{\partial t} + \frac{\tau^2}{2!} \cdot \frac{\partial^2 f(x,t)}{\partial t^2} + ... + \frac{\tau^n}{n!} \cdot \frac{\partial ^n f(x,t)}{\partial t^n}
+$$
+Here is the slick trick with the taylor series that we found for $f(x,t+\tau)$ and the taylor series for $f(x+\Delta, t)$ that we applied to our definition. Really beyond the 2nd terms they partials don't yield much. The way I like to think of it is by thinking of what the actual derivatives mean. As we keep taking more partial derivatives with respect to time we get velocity $\rightarrow$ acceleration $\rightarrow$ jerk $\rightarrow$ snap $\rightarrow$ crackle $\rightarrow$ pop. The movements of particles don't really exhibit acceleration, and therefore don't exhibit the other derivatives of position vector.
+\newline
+\newline
+Applying that gives us
+$$
+f(x,t+\tau) =  f(x,t) + \frac{\partial f(x,t)}{\partial t}
+$$
+Although we'll keep the other higher moments for the partial derivatives with respect to $x$
+$$
+f(x,t) + \frac{\partial f(x,t)}{\partial t} = f(x,t) + \frac{\partial^2f(x,t)}{\partial x^2} \int_{-\infty}^{\infty} \phi(\Delta) \frac{\Delta^2}{2!}d\Delta + \textrm{higher moments}
+$$
+Now get rid of the $f(x,t)$ and divided by $\tau$
+$$
+\frac{\partial f(x,t)}{\partial t} = \frac{\partial^2 f(x,t)}{\partial x^2} \int_{-\infty}^{\infty} \frac{\Delta^2}{2\tau} \cdot \phi(\Delta) d\Delta
+$$
+Then if we let $D$ be the mass diffusivity we get
+$$
+\frac{\partial f(x,t)}{\partial t} = D \cdot \frac{\partial^2 f(x,t)}{\partial x^2}
+$$
+When you solve that diffusion equation you end up with the density function of $f(x,t)$ being
+$$
+f(x,t) = \frac{N}{\sqrt{4Dt}}e^{-\frac{x^2}{4Dt}}
+$$
+Where $N$ is the number of particles at the time $t_0$. By looking at the how this density relates to the normal distribution we can see that
+$$
+\mu = 0
+$$
+$$
+\sigma^2 = 2Dt
+$$
+\end{document}
